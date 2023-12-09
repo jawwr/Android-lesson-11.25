@@ -11,5 +11,5 @@ interface UpsertTasksUseCase {
 class UpsertTasksUseCaseImpl @Inject constructor(
     private val tasksRepository: TasksRepository
 ) : UpsertTasksUseCase {
-    override suspend fun invoke(task: Task) = tasksRepository.upset(task)
+    override suspend fun invoke(task: Task) = tasksRepository.upsert(task)
 }

@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 interface TasksRepository {
     val taskOrdered: Flow<List<Task>>
-    suspend fun upset(task: Task)
+    suspend fun upsert(task: Task)
     suspend fun deleteTask(task: Task)
 }
 
@@ -21,7 +21,7 @@ class TasksRepositoryImpl @Inject constructor(
             it.map { it.toTask() }
         }
 
-    override suspend fun upset(task: Task) {
+    override suspend fun upsert(task: Task) {
         dao.upsertTask(task.toTaskEntity())
     }
 

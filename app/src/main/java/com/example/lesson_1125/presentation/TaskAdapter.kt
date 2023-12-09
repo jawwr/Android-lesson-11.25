@@ -11,8 +11,11 @@ import com.example.lesson_1125.databinding.ItemTaskBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil()) {
+class TaskAdapter(
+    private val onTaskStateClick: (Task) -> Unit
+) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil()) {
     class TaskViewHolder(
+        private val onTaskStateClick: (Task) -> Unit,
         private val binding: ItemTaskBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) = with(binding) {
@@ -22,6 +25,10 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil()
             itemTaskDescription.text = task.description
             itemTaskEndTime.text = formatter.format(task.endTime)
             itemTaskStartTime.text = formatter.format(task.startTime)
+            itemTaskStatus.text = task.state.name
+            itemTaskStatus.setOnClickListener {
+                onTaskStateClick(task)
+            }
         }
     }
 
@@ -35,7 +42,7 @@ class TaskAdapter : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil()
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val binding = ItemTaskBinding.inflate(inflater, parent, false)
-        return TaskViewHolder(binding)
+        return TaskViewHolder(onTaskStateClick, binding)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
